@@ -21,7 +21,7 @@ function getWorkingHrs ()
                                         empHrs=4
                                 ;;
 
-                         *)
+                        *)
                                         empHrs=0
                                 ;;
 
@@ -30,14 +30,24 @@ function getWorkingHrs ()
        echo $empHrs
 }
 
+function getEmpwage()
+{
+        empHrs=$1
+        echo $(($empHrs*$EmpRateperHr))
+}
+
 while [[ $TotalempHrs -le $maxHrsInmonth && $TotalWorkingDays -le $WorkingDays ]]
 do
         (($TotalWorkingDays+1))
 	empHrs=$( getWorkingHrs $(($RANDOM%3)) )
 	TotalempHrs=$(($TotalempHrs+$empHrs))
+	dailywages[$TotalWorkingDays]=$( getEmpwage $empHrs )
 done
 
 totalsalary=$(($TotalempHrs*$EmpRateperHr))
 
 
 echo "Total Salary Of Employee Is : $totalsalary"
+
+echo "Daily Wages Of Employee Is : ${dailywages[@]}"
+
